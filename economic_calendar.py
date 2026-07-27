@@ -1,10 +1,17 @@
+from datetime import datetime, timedelta, timezone
 import requests
 
 URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 
 
 def get_calendar():
-
+def convert_to_wita(utc_time):
+    try:
+        dt = datetime.fromisoformat(utc_time.replace("Z", "+00:00"))
+        wita = timezone(timedelta(hours=8))
+        return dt.astimezone(wita)
+    except Exception:
+        return None
     try:
         data = requests.get(URL, timeout=10).json()
 
