@@ -1,46 +1,31 @@
-import feedparser
-from deep_translator import GoogleTranslator
+import requests
 
-RSS_URL = "https://www.forexfactory.com/ffcal_week_this.xml"
-
-HIGH_IMPACT = [
-    "Non-Farm Payroll",
-    "CPI",
-    "Core CPI",
-    "FOMC",
-    "Interest Rate",
-    "PPI",
-    "PCE",
-    "GDP",
-    "Retail Sales",
-    "Powell"
-]
+URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 
 
 def get_calendar():
 
-    feed = feedparser.parse(RSS_URL)
+    try:
+        data = requests.get(URL, timeout=10).json()
 
-    kalender = []
+        hasil = []
 
-    for item in feed.entries:
+        for item in data:
 
-        title = item.title
+            impact = str(item.get("impact", "")).lower()
 
-        if any(x.lower() in title.lower() for x in HIGH_IMPACT):
+            if "high" not in impact:
+                continue
 
-            try:
-                title = GoogleTranslator(
-                    source="auto",
-                    target="id"
-                ).translate(title)
-            except:
-                pass
-
-            kalender.append({
-                "title": title,
-                "date": item.get("published", ""),
-                "impact": "⭐⭐⭐⭐⭐"
+            hasil.append({
+                "title": item.get("title", ""),
+                "country": item.get("country", ""),
+                "date": item.get("date", ""),
+                "impact": item.get("impact", "")
             })
 
-    return kalender
+        return hasil
+
+    except Exception as e:
+        print("Calendar Error:", e)
+        return []
