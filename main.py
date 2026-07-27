@@ -1,17 +1,39 @@
 import os
+import time
 import requests
+from news import get_news
 
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+sent = set()
 
-data = {
-    "chat_id": CHAT_ID,
-    "text": "Tes dari Railway"
-}
+while True:
+    try:
+        news = get_news()
 
-r = requests.post(url, data=data)
+        for item in news:
+            if item["link"] not in sent:
 
-print("Status:", r.status_code)
-print("Response:", r.text)
+                text = f"""🚨 BREAKING NEWS
+
+📰 {item['title']}
+
+🔗 {item['link']}
+"""
+
+                requests.post(
+                    f"https://api.telegram.org/bot{TOKEN}/sendMessage",
+                    data={
+                        "chat_id": CHAT_ID,
+                        "text": text
+                    }
+                )
+
+                sent.add(item["link"])
+
+        time.sleep(300)
+
+    except Exception as e:
+        print(e)
+        time.sleep(60)
