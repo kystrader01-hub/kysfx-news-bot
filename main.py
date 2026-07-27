@@ -8,9 +8,10 @@ url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
 
 data = {
     "chat_id": CHAT_ID,
-    "text": "🤖 KysFx Bot berhasil online!\n\nSelanjutnya saya akan mulai mengirim berita XAU/USD."
+    "text": "🤖 Test KysFx Bot"
 }
 
-requests.post(url, data=data)
+r = requests.post(url, data=data)
 
-print("Pesan berhasil dikirim.")
+print("Status:", r.status_code)
+print("Response:", r.text)
