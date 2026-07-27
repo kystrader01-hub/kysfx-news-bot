@@ -2,13 +2,11 @@ import os
 import time
 import requests
 from news import get_news
-from calendar import get_calendar
 
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 sent_news = set()
-sent_calendar = set()
 
 
 def analisa(judul):
@@ -38,7 +36,7 @@ def analisa(judul):
     if any(x in j for x in bullish):
         return (
             "🟢 Bullish Gold\n"
-            "💡 Ketegangan geopolitik meningkatkan permintaan emas sebagai safe haven."
+            "💡 Ketegangan geopolitik meningkatkan permintaan emas sebagai aset safe haven."
         )
 
     if any(x in j for x in bearish):
@@ -56,9 +54,6 @@ def analisa(judul):
 while True:
     try:
 
-        # ==========================
-        # BERITA
-        # ==========================
         berita = get_news()
 
         for item in berita:
@@ -75,74 +70,26 @@ while True:
 🔗 {item['link']}
 """
 
-                requests.post(
+                response = requests.post(
                     f"https://api.telegram.org/bot{TOKEN}/sendMessage",
                     data={
                         "chat_id": CHAT_ID,
                         "text": pesan
                     }
                 )
+
+                print(response.status_code)
+                print(response.text)
 
                 sent_news.add(item["link"])
-
-        # ==========================
-        # KALENDER EKONOMI
-        # ==========================
-        kalender = get_calendar()
-
-        for item in kalender:
-
-            key = f"{item['title']}_{item['date']}_{item['time']}"
-
-            if key not in sent_calendar:
-
-                pesan = f"""📅 KALENDER EKONOMI
-
-🌍 Negara : {item['country']}
-
-📌 Berita :
-{item['title']}
-
-🕒 Jadwal :
-{item['date']} {item['time']}
-
-⚠️ Dampak:
-Berpotensi menyebabkan volatilitas tinggi pada XAU/USD.
-"""
-
-                requests.post(
-                    f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-                    data={
-                        "chat_id": CHAT_ID,
-                        "text": pesan
-                    }
-                )
-
-                sent_calendar.add(key)
 
         if len(sent_news) > 1000:
             sent_news.clear()
 
-        if len(sent_calendar) > 500:
-            sent_calendar.clear()
-
-        # Tunggu 5 menit
         time.sleep(300)
 
-    
     except Exception as e:
 
         print("ERROR:", e)
-
-        try:
-            requests.post(
-                f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-                data={
-                    "chat_id": CHAT_ID,
-                    "text": f"⚠️ Error Bot\n\n{str(e)}"
-                }
-            )
-        except Exception:
-            pass
 
         time.sleep(60)
