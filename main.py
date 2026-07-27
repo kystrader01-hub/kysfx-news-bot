@@ -10,6 +10,7 @@ CHAT_ID = os.getenv("CHAT_ID")
 sent_news = set()
 sent_calendar = set()
 
+
 def analisa(judul):
     j = judul.lower()
 
@@ -37,7 +38,7 @@ def analisa(judul):
     if any(x in j for x in bullish):
         return (
             "🟢 Bullish Gold\n"
-            "💡 Ketegangan geopolitik meningkatkan permintaan emas sebagai aset safe haven."
+            "💡 Ketegangan geopolitik meningkatkan permintaan emas sebagai safe haven."
         )
 
     if any(x in j for x in bearish):
@@ -48,12 +49,16 @@ def analisa(judul):
 
     return (
         "🟡 Netral\n"
-        "💡 Tunggu konfirmasi dari pergerakan harga dan data ekonomi."
+        "💡 Tunggu konfirmasi arah pasar."
     )
+
 
 while True:
     try:
 
+        # ==========================
+        # BERITA
+        # ==========================
         berita = get_news()
 
         for item in berita:
@@ -79,7 +84,11 @@ while True:
                 )
 
                 sent_news.add(item["link"])
-                        kalender = get_calendar()
+
+        # ==========================
+        # KALENDER EKONOMI
+        # ==========================
+        kalender = get_calendar()
 
         for item in kalender:
 
@@ -98,10 +107,7 @@ while True:
 {item['date']} {item['time']}
 
 ⚠️ Dampak:
-Berita ini berpotensi menimbulkan volatilitas tinggi pada XAU/USD.
-
-💡 Tips:
-Hindari entry tepat saat berita dirilis. Tunggu konfirmasi arah pasar.
+Berpotensi menyebabkan volatilitas tinggi pada XAU/USD.
 """
 
                 requests.post(
@@ -119,23 +125,16 @@ Hindari entry tepat saat berita dirilis. Tunggu konfirmasi arah pasar.
 
         if len(sent_calendar) > 500:
             sent_calendar.clear()
-                    # Cek berita setiap 5 menit
+
+        # Tunggu 5 menit
         time.sleep(300)
 
     except Exception as e:
 
-        print("ERROR :", e)
+        print("ERROR:", e)
 
         try:
             requests.post(
                 f"https://api.telegram.org/bot{TOKEN}/sendMessage",
                 data={
-                    "chat_id": CHAT_ID,
-                    "text": f"⚠️ Bot mengalami error:\n{e}"
-                }
-            )
-        except:
-            pass
-
-        # Tunggu 1 menit lalu coba lagi
-        time.sleep(60)
+                    "
