@@ -74,14 +74,6 @@ while True:
 🔗 {item['link']}
 """
 
-📰 {item['title']}
-
-📊 Analisis
-{analisa(item['title'])}
-
-🔗 {item['link']}
-"""
-
                 response = requests.post(
                     f"https://api.telegram.org/bot{TOKEN}/sendMessage",
                     data={
