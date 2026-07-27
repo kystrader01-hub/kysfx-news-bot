@@ -39,7 +39,7 @@ KEYWORDS = [
 def dampak(title):
     t = title.lower()
 
-    bullish = [
+    if any(x in t for x in [
         "iran",
         "israel",
         "war",
@@ -49,23 +49,67 @@ def dampak(title):
         "middle east",
         "nuclear",
         "sanction"
-    ]
+    ]):
+        return "🟢 Dampak : Bullish Gold ⭐⭐⭐⭐⭐"
 
-    bearish = [
+    if any(x in t for x in [
         "rate hike",
         "hawkish",
         "strong dollar",
         "higher inflation",
         "treasury yield"
-    ]
-
-    if any(x in t for x in bullish):
-        return "🟢 Dampak : Bullish Gold ⭐⭐⭐⭐⭐"
-
-    if any(x in t for x in bearish):
+    ]):
         return "🔴 Dampak : Bearish Gold ⭐⭐⭐⭐"
 
     return "🟡 Dampak : Netral ⭐⭐⭐"
+
+
+def kategori(title):
+    t = title.lower()
+
+    if any(x in t for x in [
+        "iran",
+        "israel",
+        "war",
+        "missile",
+        "middle east",
+        "conflict"
+    ]):
+        return "🌍 Geopolitik"
+
+    if any(x in t for x in [
+        "fed",
+        "fomc",
+        "powell",
+        "interest rate",
+        "rate decision"
+    ]):
+        return "🏦 Federal Reserve"
+
+    if any(x in t for x in [
+        "cpi",
+        "core cpi",
+        "ppi",
+        "pce",
+        "inflation"
+    ]):
+        return "📈 Inflasi"
+
+    if any(x in t for x in [
+        "nfp",
+        "employment",
+        "payroll",
+        "job"
+    ]):
+        return "💼 Tenaga Kerja"
+
+    if any(x in t for x in [
+        "oil",
+        "opec"
+    ]):
+        return "🛢️ Energi"
+
+    return "📰 Berita Pasar"
 
 
 def get_news():
@@ -76,41 +120,8 @@ def get_news():
 
     for item in feed.entries[:20]:
 
-        📂 {item['category']}
-
-📰 {item['title']}
+        title = item.title
 
         if any(k.lower() in title.lower() for k in KEYWORDS):
 
-            try:
-                title_id = GoogleTranslator(
-                    source="auto",
-                    target="id"
-                ).translate(title)
-            except:
-                title_id = title
-
-            berita.append({
-    "title": title_id,
-    "impact": dampak(title),
-    "category": kategori(title),
-    "link": item.link
-})
-
-    def kategori(title):
-    t = title.lower()
-
-    if any(x in t for x in ["iran","israel","middle east","war","missile"]):
-        return "🌍 Geopolitik"
-
-    if any(x in t for x in ["fed","fomc","powell"]):
-        return "🏦 Federal Reserve"
-
-    if any(x in t for x in ["cpi","ppi","pce","inflation"]):
-        return "📈 Inflasi"
-
-    if any(x in t for x in ["nfp","employment","payroll"]):
-        return "💼 Tenaga Kerja"
-
-    return "📰 Berita Pasar"
-    return berita
+           
