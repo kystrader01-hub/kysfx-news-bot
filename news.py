@@ -19,29 +19,69 @@ KEYWORDS = [
     "middle east",
     "usd",
     "powell",
-    "trump"
+    "trump",
+    "tariff",
+    "oil",
+    "opec"
 ]
 
-def get_news():
-    feed = feedparser.parse(RSS_URL)
-    news = []
 
-    for item in feed.entries[:10]:
+def dampak(title):
+    t = title.lower()
+
+    bullish = [
+        "iran",
+        "israel",
+        "war",
+        "missile",
+        "attack",
+        "conflict",
+        "middle east",
+        "nuclear",
+        "sanction"
+    ]
+
+    bearish = [
+        "rate hike",
+        "hawkish",
+        "strong dollar",
+        "higher inflation",
+        "treasury yield"
+    ]
+
+    if any(x in t for x in bullish):
+        return "🟢 Dampak : Bullish Gold ⭐⭐⭐⭐⭐"
+
+    if any(x in t for x in bearish):
+        return "🔴 Dampak : Bearish Gold ⭐⭐⭐⭐"
+
+    return "🟡 Dampak : Netral ⭐⭐⭐"
+
+
+def get_news():
+
+    feed = feedparser.parse(RSS_URL)
+
+    berita = []
+
+    for item in feed.entries[:20]:
+
         title = item.title
 
-        if any(keyword.lower() in title.lower() for keyword in KEYWORDS):
+        if any(k.lower() in title.lower() for k in KEYWORDS):
 
             try:
-                judul_id = GoogleTranslator(
+                title_id = GoogleTranslator(
                     source="auto",
                     target="id"
                 ).translate(title)
             except:
-                judul_id = title
+                title_id = title
 
-            news.append({
-                "title": judul_id,
+            berita.append({
+                "title": title_id,
+                "impact": dampak(title),
                 "link": item.link
             })
 
-    return news
+    return berita
