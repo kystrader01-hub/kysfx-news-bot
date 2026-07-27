@@ -129,6 +129,7 @@ Berpotensi menyebabkan volatilitas tinggi pada XAU/USD.
         # Tunggu 5 menit
         time.sleep(300)
 
+    
     except Exception as e:
 
         print("ERROR:", e)
@@ -137,4 +138,11 @@ Berpotensi menyebabkan volatilitas tinggi pada XAU/USD.
             requests.post(
                 f"https://api.telegram.org/bot{TOKEN}/sendMessage",
                 data={
-                    "
+                    "chat_id": CHAT_ID,
+                    "text": f"⚠️ Error Bot\n\n{str(e)}"
+                }
+            )
+        except Exception:
+            pass
+
+        time.sleep(60)
