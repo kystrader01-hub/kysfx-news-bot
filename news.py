@@ -76,7 +76,9 @@ def get_news():
 
     for item in feed.entries[:20]:
 
-        title = item.title
+        📂 {item['category']}
+
+📰 {item['title']}
 
         if any(k.lower() in title.lower() for k in KEYWORDS):
 
@@ -89,9 +91,26 @@ def get_news():
                 title_id = title
 
             berita.append({
-                "title": title_id,
-                "impact": dampak(title),
-                "link": item.link
-            })
+    "title": title_id,
+    "impact": dampak(title),
+    "category": kategori(title),
+    "link": item.link
+})
 
+    def kategori(title):
+    t = title.lower()
+
+    if any(x in t for x in ["iran","israel","middle east","war","missile"]):
+        return "🌍 Geopolitik"
+
+    if any(x in t for x in ["fed","fomc","powell"]):
+        return "🏦 Federal Reserve"
+
+    if any(x in t for x in ["cpi","ppi","pce","inflation"]):
+        return "📈 Inflasi"
+
+    if any(x in t for x in ["nfp","employment","payroll"]):
+        return "💼 Tenaga Kerja"
+
+    return "📰 Berita Pasar"
     return berita
