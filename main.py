@@ -62,6 +62,18 @@ while True:
 
                 pesan = f"""🚨 BREAKING NEWS
 
+📂 {item['category']}
+
+📰 {item['title']}
+
+{item['impact']}
+
+📊 Analisis
+{analisa(item['title'])}
+
+🔗 {item['link']}
+"""
+
 📰 {item['title']}
 
 📊 Analisis
