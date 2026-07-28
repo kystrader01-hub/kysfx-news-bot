@@ -1,6 +1,7 @@
 from datetime import datetime
 from news import get_news
 from sentiment import hitung_sentimen
+from volatility import hitung_volatilitas
 
 
 def get_market_brief():
@@ -8,6 +9,7 @@ def get_market_brief():
     berita = get_news()
 
     hasil = hitung_sentimen(berita)
+    vol = hitung_volatilitas(berita)
 
     top_news = berita[:3]
 
@@ -45,6 +47,12 @@ def get_market_brief():
 📈 Skor Sentimen : {hasil['skor']}
 
 🎯 Confidence : {hasil['confidence']}%
+
+🔥 Volatilitas
+
+{vol['bintang']}
+
+{vol['level']}
 
 ━━━━━━━━━━━━━━━━━━
 
