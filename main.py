@@ -6,6 +6,7 @@ from datetime import datetime
 from news import get_news
 from market_brief import get_market_brief
 from session import get_market_sessions
+from economic_calendar import get_calendar
 
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -88,49 +89,4 @@ while True:
             last_brief = ""
 
         # ==========================
-        # BERITA
-        # ==========================
-        berita = get_news()
-
-        for item in berita:
-
-            if item["link"] not in sent_news:
-
-                pesan = f"""🚨 BREAKING NEWS
-
-📂 {item['category']}
-
-📰 {item['title']}
-
-{item['impact']}
-
-📊 Analisis
-{analisa(item['title'])}
-
-🔗 {item['link']}
-"""
-
-                response = requests.post(
-                    f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-                    data={
-                        "chat_id": CHAT_ID,
-                        "text": pesan
-                    }
-                )
-
-                print(response.status_code)
-                print(response.text)
-
-                sent_news.add(item["link"])
-
-        if len(sent_news) > 1000:
-            sent_news.clear()
-
-        # Cek setiap 1 menit
-        time.sleep(60)
-
-    except Exception as e:
-
-        print("ERROR:", e)
-
-        time.sleep(60)
+        #
