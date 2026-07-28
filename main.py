@@ -18,6 +18,7 @@ last_brief = ""
 
 
 def analisa(judul):
+
     j = judul.lower()
 
 
@@ -40,7 +41,7 @@ def analisa(judul):
     ]
 
 
-    bullish = [
+    geopolitik = [
         "iran",
         "israel",
         "war",
@@ -54,36 +55,75 @@ def analisa(judul):
     ]
 
 
-    bearish = [
-        "rate hike",
-        "hawkish",
+    usd_yield = [
         "strong dollar",
-        "higher inflation",
-        "treasury yield"
+        "hawkish",
+        "treasury yield",
+        "higher yield",
+        "rate hike"
+    ]
+
+
+    oil = [
+        "oil",
+        "opec",
+        "crude",
+        "brent",
+        "wti"
     ]
 
 
     if any(x in j for x in high_impact):
+
         return (
-            "⚠️ High Impact News ⭐⭐⭐⭐⭐\n"
-            "💡 Event bank sentral/data ekonomi besar dapat "
-            "memicu volatilitas tinggi pada Gold. "
-            "Tunggu reaksi harga dan konfirmasi arah."
+            "⚠️ High Impact News ⭐⭐⭐⭐⭐\n\n"
+            "🟡 Gold:\n"
+            "Potensi volatilitas tinggi. Tunggu reaksi harga.\n\n"
+            "💵 USD:\n"
+            "Perhatikan arah dolar setelah rilis data/kebijakan.\n\n"
+            "📈 Yield:\n"
+            "Kenaikan yield dapat menekan Gold.\n\n"
+            "🛢️ Oil:\n"
+            "Perubahan minyak dapat mempengaruhi ekspektasi inflasi."
         )
 
 
-    if any(x in j for x in bullish):
+    if any(x in j for x in geopolitik):
+
         return (
-            "🟢 Bullish Gold ⭐⭐⭐⭐⭐\n"
-            "💡 Ketegangan geopolitik meningkatkan permintaan emas "
-            "sebagai aset safe haven."
+            "🟢 Bullish Gold ⭐⭐⭐⭐⭐\n\n"
+            "🟡 Gold:\n"
+            "Safe haven meningkat akibat risiko geopolitik.\n\n"
+            "💵 USD:\n"
+            "Permintaan aset aman dapat meningkat.\n\n"
+            "📈 Yield:\n"
+            "Yield menjadi perhatian pasar.\n\n"
+            "🛢️ Oil:\n"
+            "Risiko konflik dapat mendorong harga minyak."
         )
 
 
-    if any(x in j for x in bearish):
+    if any(x in j for x in usd_yield):
+
         return (
-            "🔴 Bearish Gold ⭐⭐⭐⭐\n"
-            "💡 Penguatan USD dan kenaikan yield dapat menekan emas."
+            "🔴 Bearish Gold ⭐⭐⭐⭐\n\n"
+            "🟡 Gold:\n"
+            "Tekanan dari USD dan yield tinggi.\n\n"
+            "💵 USD:\n"
+            "USD menguat dapat membebani emas.\n\n"
+            "📈 Yield:\n"
+            "Yield tinggi biasanya negatif untuk Gold."
+        )
+
+
+    if any(x in j for x in oil):
+
+        return (
+            "🟡 Oil Impact ⭐⭐⭐\n\n"
+            "🛢️ Oil:\n"
+            "Perubahan minyak dapat mempengaruhi inflasi.\n\n"
+            "🟡 Gold:\n"
+            "Perhatikan respon pasar terhadap inflasi."
         )
 
 
