@@ -1,10 +1,13 @@
 from datetime import datetime
 from news import get_news
+from sentiment import hitung_sentimen
 
 
 def get_market_brief():
 
     berita = get_news()
+
+    hasil = hitung_sentimen(berita)
 
     top_news = berita[:3]
 
@@ -20,8 +23,10 @@ def get_market_brief():
 
     if 8 <= jam < 15:
         sesi = "🌏 ASIA MARKET OPEN"
+
     elif 15 <= jam < 20:
         sesi = "🇬🇧 LONDON MARKET OPEN"
+
     else:
         sesi = "🇺🇸 NEW YORK MARKET OPEN"
 
@@ -30,7 +35,16 @@ def get_market_brief():
 ━━━━━━━━━━━━━━━━━━
 
 📊 Bias Hari Ini
-🟡 Menunggu Konfirmasi
+
+{hasil['bias']}
+
+🟢 Bullish : {hasil['bullish']}
+🔴 Bearish : {hasil['bearish']}
+🟡 Netral : {hasil['netral']}
+
+📈 Skor Sentimen : {hasil['skor']}
+
+🎯 Confidence : {hasil['confidence']}%
 
 ━━━━━━━━━━━━━━━━━━
 
