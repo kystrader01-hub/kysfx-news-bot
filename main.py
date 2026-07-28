@@ -62,15 +62,20 @@ def analisa(judul):
 
 
 def kirim_telegram(text):
-    response = requests.post(
-        f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-        data={
-            "chat_id": CHAT_ID,
-            "text": text
-        }
-    )
+    try:
+        response = requests.post(
+            f"https://api.telegram.org/bot{TOKEN}/sendMessage",
+            data={
+                "chat_id": CHAT_ID,
+                "text": text
+            }
+        )
 
-    return response.status_code
+        return response.status_code
+
+    except Exception as e:
+        print("Telegram Error:", e)
+        return None
 
 
 while True:
@@ -100,9 +105,13 @@ while True:
                 last_brief = waktu
 
 
-        # Reset setiap hari
+
+        # ==========================
+        # RESET HARIAN
+        # ==========================
 
         if waktu == "00:00":
+
             last_brief = ""
             sent_news.clear()
 
@@ -121,7 +130,6 @@ while True:
 
 
             if judul not in sent_news:
-
 
                 analisa_news = analisa(judul)
 
@@ -145,20 +153,20 @@ while True:
 
 
 
-        # Batasi penyimpanan berita
+        # ==========================
+        # BATAS MEMORY
+        # ==========================
 
         if len(sent_news) > 200:
+
             sent_news.clear()
 
 
 
     except Exception as e:
 
-        print("ERROR:",
+        print("ERROR:", e)
 
 
 
-
-
-                  time.sleep(60)
-
+    time.sleep(60)
