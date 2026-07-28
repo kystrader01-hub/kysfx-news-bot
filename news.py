@@ -67,24 +67,20 @@ def dampak(title):
 def kategori(title):
     t = title.lower()
 
-    if any(x in t for x in [
-        "iran",
-        "israel",
-        "war",
-        "missile",
-        "middle east",
-        "conflict"
-    ]):
-        return "🌍 Geopolitik"
 
     if any(x in t for x in [
         "fed",
         "fomc",
         "powell",
+        "federal reserve",
         "interest rate",
-        "rate decision"
+        "rate decision",
+        "central bank",
+        "boj",
+        "ecb"
     ]):
         return "🏦 Federal Reserve"
+
 
     if any(x in t for x in [
         "cpi",
@@ -95,6 +91,7 @@ def kategori(title):
     ]):
         return "📈 Inflasi"
 
+
     if any(x in t for x in [
         "nfp",
         "employment",
@@ -103,11 +100,27 @@ def kategori(title):
     ]):
         return "💼 Tenaga Kerja"
 
+
+    if any(x in t for x in [
+        "iran",
+        "israel",
+        "war",
+        "missile",
+        "middle east",
+        "conflict",
+        "attack",
+        "sanction",
+        "nuclear"
+    ]):
+        return "🌍 Geopolitik"
+
+
     if any(x in t for x in [
         "oil",
         "opec"
     ]):
         return "🛢️ Energi"
+
 
     return "📰 Berita Pasar"
 
