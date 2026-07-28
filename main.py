@@ -20,6 +20,26 @@ last_brief = ""
 def analisa(judul):
     j = judul.lower()
 
+
+    high_impact = [
+        "fomc",
+        "fed",
+        "federal reserve",
+        "interest rate",
+        "rate decision",
+        "central bank",
+        "powell",
+        "cpi",
+        "core cpi",
+        "nfp",
+        "non farm",
+        "payroll",
+        "inflation",
+        "boj",
+        "ecb"
+    ]
+
+
     bullish = [
         "iran",
         "israel",
@@ -33,13 +53,24 @@ def analisa(judul):
         "nuclear"
     ]
 
+
     bearish = [
         "rate hike",
         "hawkish",
-        "higher inflation",
         "strong dollar",
+        "higher inflation",
         "treasury yield"
     ]
+
+
+    if any(x in j for x in high_impact):
+        return (
+            "⚠️ High Impact News ⭐⭐⭐⭐⭐\n"
+            "💡 Event bank sentral/data ekonomi besar dapat "
+            "memicu volatilitas tinggi pada Gold. "
+            "Tunggu reaksi harga dan konfirmasi arah."
+        )
+
 
     if any(x in j for x in bullish):
         return (
@@ -48,12 +79,13 @@ def analisa(judul):
             "sebagai aset safe haven."
         )
 
+
     if any(x in j for x in bearish):
         return (
             "🔴 Bearish Gold ⭐⭐⭐⭐\n"
-            "💡 Penguatan USD dan kenaikan suku bunga "
-            "dapat menekan harga emas."
+            "💡 Penguatan USD dan kenaikan yield dapat menekan emas."
         )
+
 
     return (
         "🟡 Netral ⭐⭐⭐\n"
