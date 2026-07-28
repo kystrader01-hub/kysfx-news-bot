@@ -2,6 +2,7 @@ from datetime import datetime
 from news import get_news
 from sentiment import hitung_sentimen
 from volatility import hitung_volatilitas
+from summary import ai_summary
 
 
 def get_market_brief():
@@ -10,6 +11,7 @@ def get_market_brief():
 
     hasil = hitung_sentimen(berita)
     vol = hitung_volatilitas(berita)
+    ringkasan = ai_summary(hasil, vol)
 
     top_news = berita[:3]
 
@@ -53,6 +55,12 @@ def get_market_brief():
 {vol['bintang']}
 
 {vol['level']}
+
+━━━━━━━━━━━━━━━━━━
+
+🧠 AI Market Summary
+
+{ringkasan}
 
 ━━━━━━━━━━━━━━━━━━
 
