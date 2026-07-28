@@ -5,6 +5,7 @@ from datetime import datetime
 
 from news import get_news
 from market_brief import get_market_brief
+from session import get_market_sessions
 
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -61,20 +62,24 @@ while True:
         now = datetime.now()
         waktu = now.strftime("%H:%M")
 
+        jadwal = get_market_sessions()
+
         # ==========================
         # MARKET OPEN BRIEF
         # ==========================
-        if waktu in ["07:50", "14:50", "20:20"]:
+        if waktu in jadwal.values():
 
             if last_brief != waktu:
 
-                requests.post(
+                response = requests.post(
                     f"https://api.telegram.org/bot{TOKEN}/sendMessage",
                     data={
                         "chat_id": CHAT_ID,
                         "text": get_market_brief()
                     }
                 )
+
+                print("Market Brief:", response.status_code)
 
                 last_brief = waktu
 
