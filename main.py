@@ -1,12 +1,16 @@
 import os
 import time
 import requests
+from datetime import datetime
+
 from news import get_news
+from market_brief import get_market_brief
 
 TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 sent_news = set()
+last_brief = ""
 
 
 def analisa(judul):
@@ -54,6 +58,33 @@ def analisa(judul):
 while True:
     try:
 
+        now = datetime.now()
+        waktu = now.strftime("%H:%M")
+
+        # ==========================
+        # MARKET OPEN BRIEF
+        # ==========================
+        if waktu in ["07:50", "14:50", "20:20"]:
+
+            if last_brief != waktu:
+
+                requests.post(
+                    f"https://api.telegram.org/bot{TOKEN}/sendMessage",
+                    data={
+                        "chat_id": CHAT_ID,
+                        "text": get_market_brief()
+                    }
+                )
+
+                last_brief = waktu
+
+        # Reset setiap hari
+        if waktu == "00:00":
+            last_brief = ""
+
+        # ==========================
+        # BERITA
+        # ==========================
         berita = get_news()
 
         for item in berita:
@@ -90,7 +121,8 @@ while True:
         if len(sent_news) > 1000:
             sent_news.clear()
 
-        time.sleep(300)
+        # Cek setiap 1 menit
+        time.sleep(60)
 
     except Exception as e:
 
