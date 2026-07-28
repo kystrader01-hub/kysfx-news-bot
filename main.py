@@ -62,6 +62,7 @@ def analisa(judul):
 
 
 def kirim_telegram(text):
+
     try:
         response = requests.post(
             f"https://api.telegram.org/bot{TOKEN}/sendMessage",
@@ -76,6 +77,7 @@ def kirim_telegram(text):
     except Exception as e:
         print("Telegram Error:", e)
         return None
+
 
 
 while True:
@@ -131,12 +133,13 @@ while True:
 
             if judul not in sent_news:
 
+
                 analisa_news = analisa(judul)
 
 
                 pesan = (
                     "🚨 BREAKING NEWS\n\n"
-                    "📂 🌍 Geopolitik\n\n"
+                    f"📂 {news.get('category','📰 Berita Pasar')}\n\n"
                     f"📰 {judul}\n\n"
                     f"{analisa_news}\n\n"
                     f"🔗 {news.get('url','')}"
