@@ -123,19 +123,23 @@ def get_news():
         title = item.title
 
         if any(k.lower() in title.lower() for k in KEYWORDS):
+
             try:
                 title_id = GoogleTranslator(
                     source="auto",
                     target="id"
                 ).translate(title)
+
             except Exception:
                 title_id = title
+
 
             berita.append({
                 "title": title_id,
                 "impact": dampak(title),
                 "category": kategori(title),
-                "link": item.link
+                "url": item.link
             })
+
 
     return berita
