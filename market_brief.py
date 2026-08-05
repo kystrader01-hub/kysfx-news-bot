@@ -1,8 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from news import get_news
 from sentiment import hitung_sentimen
 from volatility import hitung_volatilitas
 from summary import ai_summary
+
+WITA = timezone(timedelta(hours=8))
 
 
 def get_market_brief():
@@ -23,7 +25,7 @@ def get_market_brief():
         for item in top_news:
             daftar += f"• {item['title']}\n"
 
-    jam = datetime.now().hour
+    jam = datetime.now(WITA).hour
 
     if 8 <= jam < 15:
         sesi = "🌏 ASIA MARKET OPEN"
