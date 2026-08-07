@@ -1,34 +1,35 @@
 from datetime import datetime
-
-
-def is_dst():
-    """
-    Perkiraan DST:
-    Maret - Oktober = DST aktif
-    November - Februari = DST tidak aktif
-    """
-
-    bulan = datetime.utcnow().month
-
-    return 3 <= bulan <= 10
+from zoneinfo import ZoneInfo
 
 
 def get_market_sessions():
+    """
+    Jadwal Market Open (WITA)
+    Menggunakan timezone asli sehingga DST dihitung otomatis.
+    """
 
-    if is_dst():
+    london = datetime.now(ZoneInfo("Europe/London"))
+    newyork = datetime.now(ZoneInfo("America/New_York"))
 
-        return {
-            "asia": "07:50",
-            "frankfurt": "12:50",
-            "london": "13:50",
-            "newyork": "18:50"
-        }
+    # Cek DST
+    london_dst = london.dst().total_seconds() != 0
+    newyork_dst = newyork.dst().total_seconds() != 0
 
-    else:
+    # Asia tidak memakai DST
+    asia = "07:50"
 
-        return {
-            "asia": "07:50",
-            "frankfurt": "13:50",
-            "london": "14:50",
-            "newyork": "19:50"
-        }
+    # Frankfurt mengikuti DST Eropa
+    frankfurt = "12:50" if london_dst else "13:50"
+
+    # London
+    london = "13:50" if london_dst else "14:50"
+
+    # New York
+    newyork = "18:50" if newyork_dst else "19:50"
+
+    return {
+        "asia": asia,
+        "frankfurt": frankfurt,
+        "london": london,
+        "newyork": newyork
+    }
