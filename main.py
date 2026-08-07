@@ -165,6 +165,8 @@ while True:
         # ==========================
 
         jadwal = get_market_sessions()
+        print("Sekarang :", waktu)
+print("Jadwal :", jadwal)
 
         if waktu in jadwal.values():
 
